@@ -6,22 +6,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const dogImgInput = document.querySelector('#dog-img-input')
   const goodDogInput = document.querySelector('#good-dog-input')
 
+// INITIAL FETCH
   fetch('http://localhost:3000/pups', { method: 'GET' })
     .then(/*function*/(resp) => resp.json())
     .then(/*function*/(dogDataJSON) => {
       dogDataJSON.forEach(/*function*/(dog) => {
         const newPup = new Dog(dog)
-        debugger
         dogBar.innerHTML += newPup.renderSpan()
       })
     })
 
+// RENDER DETAILS OF CLICKED DOG
     dogBar.addEventListener('click', (e) => {
       const clickedDogId = parseInt(e.target.dataset.id)
       const foundDog = Dog.findDog(clickedDogId)
       dogInfo.innerHTML = foundDog.renderDetails()
     })
 
+// CLICK EDIT DOG + PRE-FILL FORM
     dogInfo.addEventListener('click', (e) => {
       if (e.target.className === 'edit' || e.target.dataset.action === 'edit') {
         console.log(e.target)
@@ -35,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
 
+// PATCH REQUEST TO UPDATE DOG
     dogForm.addEventListener('submit', (e) => {
       e.preventDefault()
       const updateDogId = e.target.dataset.id //don't need to parseInt because we are interpolating the id into a url string
